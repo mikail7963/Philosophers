@@ -54,7 +54,7 @@ typedef struct s_sim
 void	*monitor(void *arg);
 long	get_current_time(void);
 void	log_status(int id, const char	*status, t_sim *sim);
-void	ft_usleep(size_t milliseconds, t_sim *sim);
+void	ft_usleep(size_t milliseconds);
 int		arg_check(int argc, char **argv, t_sim *simulation);
 void	init_arg(t_philo *philo, char **argv, t_sim *simulation);
 void	*routine(void *arg);

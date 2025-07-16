@@ -12,21 +12,20 @@
 
 #include "philo.h"
 
-void	ft_usleep(size_t milliseconds, t_sim *sim)
+void	ft_usleep(size_t milliseconds)
 {
 	size_t	start;
 
 	start = get_current_time();
-	while ((get_current_time() - start) < milliseconds
-		&& read_sim(sim) == 0)
-		usleep(500);
+	while ((get_current_time() - start) < milliseconds)
+		usleep(200);
 }
 
 void	one_philo(t_sim *sim, t_philo *philo)
 {
 	log_status(philo->id, "is thinking", sim);
 	log_status(philo->id, "has taken a fork", sim);
-	ft_usleep(philo->time_to_die, sim);
+	ft_usleep(philo->time_to_die);
 	printf("%ld %d died\n", (get_current_time() - sim->start_time), \
 	philo->id);
 	sim->stop_simulation = 1;
@@ -44,6 +43,7 @@ void	take_forks(t_philo *philo)
 	}
 	else
 	{
+		usleep(120);
 		pthread_mutex_lock(philo->right_fork);
 		log_status(philo->id, "has taken a fork", philo-> sim);
 		pthread_mutex_lock(philo->left_fork);
@@ -63,9 +63,9 @@ void	eat(t_philo *philo)
 	sim->total_meal++;
 	philo->last_time_to_eat = get_current_time();
 	pthread_mutex_unlock(&sim->meal_mutex);
-	ft_usleep(philo->time_to_eat, sim);
-	pthread_mutex_unlock(philo->left_fork);
+	ft_usleep(philo->time_to_eat);
 	pthread_mutex_unlock(philo->right_fork);
+	pthread_mutex_unlock(philo->left_fork);
 	return ;
 }
 
@@ -86,7 +86,7 @@ void	*routine(void *arg)
 		log_status(philo->id, "is thinking", sim);
 		eat(philo);
 		log_status(philo->id, "is sleeping", sim);
-		ft_usleep(philo->time_to_sleep, sim);
+		ft_usleep(philo->time_to_sleep);
 	}
 	return (NULL);
 }
